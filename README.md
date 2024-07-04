@@ -210,6 +210,22 @@ To securely pull code from GitHub, generate an SSH key and add it to your GitHub
 
 3. Save and close the file. In `vim`, you can save and exit by pressing `ESC` to enter command mode, then type `:wq` and press `ENTER`
 
+## Step 12: Install Hasura CLI Using the Official Script
+
+1. **Download and install the Hasura CLI:**
+
+   ```bash
+   curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+   ```
+
+2. **Verify the installation:**
+
+   After installation, you can verify that the Hasura CLI is installed correctly by checking its version:
+
+   ```bash
+   hasura version
+   ```
+
 ## Summary
 
 You have now set up Podman Compose on your Debian system, configured your environment to automatically activate the Podman virtual environment every time you SSH into your server, generated an SSH key, added it to your GitHub account, created a directory in `/etc/` to store the app codebase, pulled code from GitHub, and installed NVM along with the latest LTS version of Node.js.
