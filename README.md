@@ -191,6 +191,24 @@ To securely pull code from GitHub, generate an SSH key and add it to your GitHub
    node -v
    npm -v
    ```
+   Certainly! Here's the updated Step 10 using `vim` instead of `nano`:
+
+## Step 10: Configure Default Registries for Podman
+
+1. Open the `/etc/containers/registries.conf` file in a text editor:
+
+   ```bash
+   sudo vim /etc/containers/registries.conf
+   ```
+
+2. Add the following configuration under the `[registries.search]` section:
+
+   ```plaintext
+   [registries.search]
+   registries = ['docker.io', 'quay.io', 'registry.fedoraproject.org']
+   ```
+
+3. Save and close the file. In `vim`, you can save and exit by pressing `ESC` to enter command mode, then type `:wq` and press `ENTER`
 
 ## Summary
 
