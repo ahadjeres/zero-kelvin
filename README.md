@@ -1,6 +1,3 @@
-Certainly! Here's the complete updated tutorial including the steps to install NVM (Node Version Manager) and install the latest LTS version of Node.js.
-
-```markdown
 # Setting Up Podman Compose on Debian Instance
 
 This tutorial will guide you through the process of setting up Podman Compose on a Debian instance, including steps to ensure the virtual environment is activated every time you SSH into your server. Additionally, it will cover generating an SSH key to pull code from GitHub, creating a directory in `/etc/` to store the app codebase, and installing NVM for Node.js.
@@ -263,6 +260,3 @@ You have now set up Podman Compose on your Debian system, configured your enviro
    node -v
    npm -v
    ```
-
-Now, every time you SSH into your Debian server, your Podman virtual environment will be automatically activated, and you can securely pull code from GitHub using SSH, as well as use the latest LTS version of Node.js.
-```
