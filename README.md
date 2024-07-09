@@ -1,5 +1,3 @@
-Here's the updated README with a section on the script and a table of contents.
-
 # Setting Up Podman Compose on Debian Instance
 
 This tutorial will guide you through the process of setting up Podman Compose on a Debian instance, including steps to ensure the virtual environment is activated every time you SSH into your server. Additionally, it will cover generating an SSH key to pull code from GitHub, creating a directory in `/etc/` to store the app codebase, installing NVM for Node.js, and resolving common issues related to Podman.
