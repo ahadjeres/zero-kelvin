@@ -1,6 +1,6 @@
 # Setting Up Podman Compose on Debian Instance
 
-This tutorial will guide you through the process of setting up Podman Compose on a Debian instance, including steps to ensure the virtual environment is activated every time you SSH into your server. Additionally, it will cover generating an SSH key to pull code from GitHub, creating a directory in `/etc/` to store the app codebase, and installing NVM for Node.js.
+This tutorial will guide you through the process of setting up Podman Compose on a Debian instance, including steps to ensure the virtual environment is activated every time you SSH into your server. Additionally, it will cover generating an SSH key to pull code from GitHub, creating a directory in `/etc/` to store the app codebase, installing NVM for Node.js, and resolving common issues related to Podman.
 
 ## Step 1: Update and Install Necessary Packages
 
@@ -191,7 +191,6 @@ To securely pull code from GitHub, generate an SSH key and add it to your GitHub
    node -v
    npm -v
    ```
-   Certainly! Here's the updated Step 10 using `vim` instead of `nano`:
 
 ## Step 10: Configure Default Registries for Podman
 
@@ -208,71 +207,77 @@ To securely pull code from GitHub, generate an SSH key and add it to your GitHub
    registries = ['docker.io', 'quay.io', 'registry.fedoraproject.org']
    ```
 
-3. Save and close the file. In `vim`, you can save and exit by pressing `ESC` to enter command mode, then type `:wq` and press `ENTER`
+3. Save and close the file. In `vim`, you can save and exit by pressing `ESC` to enter command mode, then type `:wq` and press `ENTER`.
 
-## Step 12: Install Hasura CLI Using the Official Script
+## Step 11: Install Hasura CLI Using the Official Script
 
-1. **Download and install the Hasura CLI:**
+1. Download and install the Hasura CLI:
 
    ```bash
    curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
    ```
 
-2. **Verify the installation:**
-
-   After installation, you can verify that the Hasura CLI is installed correctly by checking its version:
+2. Verify the installation:
 
    ```bash
    hasura version
    ```
-### Bugs And Issues 
 
-`failed to move the rootless netns slirp4netns process to the systemd user.slice`
-
-It looks like you are encountering two separate issues: one related to the `slirp4netns` process and another related to exposing a privileged port (port 80) as a rootless user.
+## Step 12: Resolve Common Issues
 
 ### Issue 1: `slirp4netns` and `dbus-launch` Error
 
-This error indicates that the `dbus-launch` executable is not found in your `$PATH`. You need to install the `dbus` package to resolve this:
+If you encounter the error `failed to move the rootless netns slirp4netns process to the systemd user.slice`, it indicates that `dbus-launch` is not found in your `$PATH`. Install the `dbus` package to resolve this:
 
 ```bash
 sudo apt install dbus -y
 ```
 
-After installing `dbus`, the error should be resolved.
+### Issue 2: Exposing Privileged Ports 80 and 443
 
-### Issue 2: Exposing Privileged Port 80
+By default, rootless Podman cannot bind to ports below 1024. You can allow rootless users to bind to ports 80 and 443 by modifying `net.ipv4.ip_unprivileged_port_start`:
 
-By default, rootless Podman cannot bind to ports below 1024. You have a couple of options to resolve this:
-
-1. **Modify `net.ipv4.ip_unprivileged_port_start` to allow rootless users to bind to lower ports:**
-
-   Edit the `/etc/sysctl.conf` file:
+1. Edit the `/etc/sysctl.conf` file:
 
    ```bash
    sudo vim /etc/sysctl.conf
    ```
 
-   Add the following line to the file:
+2. Add the following line to the file:
 
    ```plaintext
    net.ipv4.ip_unprivileged_port_start=80
    ```
 
-   Save and close the file. Then, apply the change:
+3. Save and close the file. Then, apply the change:
 
    ```bash
    sudo sysctl -p
    ```
 
-2. **Use a port number greater than or equal to 1024:**
-
-   Instead of using port 80, you can choose a port number that is greater than or equal to 1024. For example, use port 8080:
+4. Install necessary dependencies:
 
    ```bash
-   podman run -p 8080:80 your_image
+   sudo apt install slirp4netns -y
    ```
+
+5. Enable linger for your user:
+
+   ```bash
+   sudo loginctl enable-linger $USER
+   ```
+
+6. Enable and start the `podman` service for your user:
+
+   ```bash
+   systemctl --user enable podman
+   systemctl --user start podman
+   ```
+
+7. Restart your system to ensure all changes take effect.
 
 ## Summary
 
-You have now set up Podman Compose on your Debian system, configured your environment to automatically activate the Podman virtual environment every time you SSH into your server, generated an SSH key, added it to your GitHub account, created a directory in `/etc/` to store the app codebase, pulled code from GitHub, and installed NVM along with the latest LTS version of Node.js.
+You have now set up Podman Compose on your Debian system, configured your environment to automatically activate the Podman virtual environment every time you SSH into your server, generated an SSH key, added it to your GitHub account, created a directory in `/etc/` to store the app codebase, pulled code from GitHub, installed NVM along with the latest LTS version of Node.js, and resolved common issues related to Podman.
+
+With these steps, you're all set to run your multi-container applications seamlessly. Happy coding, and may your servers be ever stable!
