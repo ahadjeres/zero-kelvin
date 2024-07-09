@@ -225,6 +225,53 @@ To securely pull code from GitHub, generate an SSH key and add it to your GitHub
    ```bash
    hasura version
    ```
+### Bugs And Issues 
+
+`failed to move the rootless netns slirp4netns process to the systemd user.slice`
+
+It looks like you are encountering two separate issues: one related to the `slirp4netns` process and another related to exposing a privileged port (port 80) as a rootless user.
+
+### Issue 1: `slirp4netns` and `dbus-launch` Error
+
+This error indicates that the `dbus-launch` executable is not found in your `$PATH`. You need to install the `dbus` package to resolve this:
+
+```bash
+sudo apt install dbus -y
+```
+
+After installing `dbus`, the error should be resolved.
+
+### Issue 2: Exposing Privileged Port 80
+
+By default, rootless Podman cannot bind to ports below 1024. You have a couple of options to resolve this:
+
+1. **Modify `net.ipv4.ip_unprivileged_port_start` to allow rootless users to bind to lower ports:**
+
+   Edit the `/etc/sysctl.conf` file:
+
+   ```bash
+   sudo vim /etc/sysctl.conf
+   ```
+
+   Add the following line to the file:
+
+   ```plaintext
+   net.ipv4.ip_unprivileged_port_start=80
+   ```
+
+   Save and close the file. Then, apply the change:
+
+   ```bash
+   sudo sysctl -p
+   ```
+
+2. **Use a port number greater than or equal to 1024:**
+
+   Instead of using port 80, you can choose a port number that is greater than or equal to 1024. For example, use port 8080:
+
+   ```bash
+   podman run -p 8080:80 your_image
+   ```
 
 ## Summary
 
