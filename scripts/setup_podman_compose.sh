@@ -1,5 +1,27 @@
 #!/bin/bash
 
+# Function to display usage instructions
+usage() {
+    echo "Usage: $0 -e EMAIL -p PROJECT_NAME"
+    echo "  -e EMAIL          Your email address for SSH key generation"
+    echo "  -p PROJECT_NAME   The name of your project"
+    exit 1
+}
+
+# Parse command line arguments
+while getopts ":e:p:" opt; do
+  case $opt in
+    e) EMAIL=$OPTARG ;;
+    p) PROJECT_NAME=$OPTARG ;;
+    *) usage ;;
+  esac
+done
+
+# Check if email and project name are provided
+if [ -z "$EMAIL" ] || [ -z "$PROJECT_NAME" ]; then
+    usage
+fi
+
 # Update and install necessary packages
 echo "Updating package list and installing necessary packages..."
 sudo apt update
@@ -35,7 +57,7 @@ fi
 
 # Generate SSH key
 echo "Generating SSH key..."
-ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/id_ed25519 -N ""
+ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/id_ed25519 -N ""
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
@@ -46,12 +68,12 @@ read -p "Press enter after adding the SSH key to GitHub..."
 
 # Create a directory in /etc/ for the project
 echo "Creating directory in /etc/ for the project..."
-sudo mkdir -p /etc/your_project_name
-sudo chown $USER:$USER /etc/your_project_name
+sudo mkdir -p /etc/$PROJECT_NAME
+sudo chown $USER:$USER /etc/$PROJECT_NAME
 
 # Pull code from GitHub
 echo "Pulling code from GitHub..."
-cd /etc/your_project_name
+cd /etc/$PROJECT_NAME
 git clone git@github.com:your_username/your_repository.git
 
 # Install NVM and Node.js

@@ -1,6 +1,37 @@
+Here's the updated README with a section on the script and a table of contents.
+
 # Setting Up Podman Compose on Debian Instance
 
 This tutorial will guide you through the process of setting up Podman Compose on a Debian instance, including steps to ensure the virtual environment is activated every time you SSH into your server. Additionally, it will cover generating an SSH key to pull code from GitHub, creating a directory in `/etc/` to store the app codebase, installing NVM for Node.js, and resolving common issues related to Podman.
+
+## Table of Contents
+1. [Automated Setup Script](#automated-setup-script)
+2. [Step 1: Update and Install Necessary Packages](#step-1-update-and-install-necessary-packages)
+3. [Step 2: Create and Activate the Virtual Environment](#step-2-create-and-activate-the-virtual-environment)
+4. [Step 3: Install Podman Compose](#step-3-install-podman-compose)
+5. [Step 4: Verify the Installation](#step-4-verify-the-installation)
+6. [Step 5: Automatically Activate the Virtual Environment on SSH](#step-5-automatically-activate-the-virtual-environment-on-ssh)
+    - [For Bash Users](#for-bash-users)
+    - [For Zsh Users](#for-zsh-users)
+7. [Step 6: Generate an SSH Key](#step-6-generate-an-ssh-key)
+8. [Step 7: Create a Directory in `/etc/` for the Project](#step-7-create-a-directory-in-etc-for-the-project)
+9. [Step 8: Pull Code from GitHub](#step-8-pull-code-from-github)
+10. [Step 9: Install NVM (Node Version Manager) and Node.js](#step-9-install-nvm-node-version-manager-and-nodejs)
+11. [Step 10: Configure Default Registries for Podman](#step-10-configure-default-registries-for-podman)
+12. [Step 11: Install Hasura CLI Using the Official Script](#step-11-install-hasura-cli-using-the-official-script)
+13. [Step 12: Resolve Common Issues](#step-12-resolve-common-issues)
+    - [Issue 1: `slirp4netns` and `dbus-launch` Error](#issue-1-slirp4netns-and-dbus-launch-error)
+    - [Issue 2: Exposing Privileged Ports 80 and 443](#issue-2-exposing-privileged-ports-80-and-443)
+14. [Summary](#summary)
+
+## Automated Setup Script
+
+To automate the setup process, you can use the following script. This script accepts parameters for your email address and project name.
+
+### Usage
+```bash
+./scripts/setup_podman_compose.sh -e your_email@example.com -p your_project_name
+```
 
 ## Step 1: Update and Install Necessary Packages
 
@@ -69,7 +100,9 @@ To ensure the virtual environment is activated every time you SSH into your Debi
 
 ### For Zsh Users
 
-1. Open the `~/.zshrc` file in a text editor:
+1. Open the `
+
+~/.zshrc` file in a text editor:
 
    ```bash
    nano ~/.zshrc
