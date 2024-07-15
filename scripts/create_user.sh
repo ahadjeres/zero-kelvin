@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if the script is run as root
-if [ "$(id -u)" -ne 0 ]; then
+if [ "$(id -u)" -ne 0; then
     echo "This script must be run as root"
     exit 1
 fi
@@ -18,6 +18,9 @@ SSH_KEY=$2
 # Create a new user without a password
 useradd -m -s /bin/bash "$USERNAME"
 
+# Add the user to the sudo group
+usermod -aG sudo "$USERNAME"
+
 # Create .ssh directory for the new user
 mkdir -p /home/"$USERNAME"/.ssh
 
@@ -31,4 +34,4 @@ chmod 600 /home/"$USERNAME"/.ssh/authorized_keys
 # Change ownership of the .ssh directory and its contents
 chown -R "$USERNAME":"$USERNAME" /home/"$USERNAME"/.ssh
 
-echo "User $USERNAME created and SSH key added successfully."
+echo "User $USERNAME created, added to sudo group, and SSH key added successfully."
