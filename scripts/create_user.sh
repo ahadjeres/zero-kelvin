@@ -18,6 +18,8 @@ SSH_KEY=$2
 # Create a new user without a password and add to sudo group
 adduser --ingroup sudo --disabled-password --gecos "" "$USERNAME"
 
+echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$USERNAME
+
 # Create .ssh directory for the new user
 mkdir -p /home/"$USERNAME"/.ssh
 
