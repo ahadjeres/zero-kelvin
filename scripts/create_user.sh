@@ -31,7 +31,7 @@ chmod 700 /home/"$USERNAME"/.ssh
 chmod 600 /home/"$USERNAME"/.ssh/authorized_keys
 
 # Change ownership of the .ssh directory and its contents
-chown -R "$USERNAME":"$USERNAME" /home/"$USERNAME"/.ssh
+chown -R "$USERNAME" /home/"$USERNAME"/.ssh
 
 # Configure sudo to not ask for a password for the new user
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/"$USERNAME"
